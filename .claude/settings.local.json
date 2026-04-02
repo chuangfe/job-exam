@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:www.ptt.cc)",
+      "WebFetch(domain:www.dcard.tw)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
