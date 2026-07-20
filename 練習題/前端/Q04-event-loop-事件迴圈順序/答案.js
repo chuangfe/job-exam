@@ -1,50 +1,70 @@
 /*
-【答案】Event Loop 與 macrotask / microtask（順序預測）
+【答案】Event Loop 順序預測（macrotask / microtask）
 
-輸出順序：1 5 7 3 6 4 2 解析：
-- 同步階段：1、5（async 函式同步執行到第一個 await）、7。
-- 第一輪 microtask：3（.then 回呼）先進佇列；6（await null 之後續）後進佇列，
-  故 3 早於 6。
-- microtask 內又產生的 microtask 4，會在本輪 microtask 持續清空時執行。
-- 最後才執行 macrotask 2（setTimeout）。
+正確順序：1 5 7 3 6 4 2
+
+逐步解析：
+① 同步階段（由上而下，先全部跑完）
+   - log(1)                         → 1
+   - setTimeout 的回呼「排進 macrotask」，現在不執行
+   - Promise.then 的回呼「排進 microtask」，現在不執行
+   - async IIFE：await 之前是同步 → log(5) → 5
+     （await null 之後的 log(6) 被切成 microtask，排隊）
+   - log(7)                         → 7
+   → 同步結束，已印：1 5 7
+
+② 清空 microtask（把佇列清到空，過程中新產生的也要清）
+   目前 microtask 佇列順序：先排的 then(3) 在前、await 後的(6) 在後。
+   - 跑 then 回呼 → log(3) → 3；它「又排了一個」microtask log(4)
+   - 跑 await 後續 → log(6) → 6
+   - 佇列還有剛剛新產生的 log(4) → 4
+   → microtask 清空，這輪印：3 6 4
+
+③ 執行一個 macrotask
+   - setTimeout 回呼 → log(2) → 2
+
+合起來：1 5 7 3 6 4 2
+
+常見誤區：
+- 以為 setTimeout(…, 0) 會「馬上」執行 → 不會，macrotask 永遠排在 microtask 之後。
+- 以為 3 和 6 誰先誰後看不出來 → then(3) 比 async 的 await(6) 更早進佇列，所以 3 在前。
+- 以為 microtask 裡再產生的 4 要等下一輪 → 不用，同一輪會把新冒出來的 microtask 一起清掉。
 */
 
-// predictOrder：實際執行 event loop 範例，回傳印出順序的字串陣列
-function predictOrder() {
-  const output = [];
-  const log = (x) => output.push(x);
+// 預測的印出順序
+const predictedOrder = [1, 5, 7, 3, 6, 4, 2];
 
+// ===== 測試（實際跑一次 event loop，比對預測）=====
+const assert = require('node:assert');
+
+function runActual() {
   return new Promise((resolve) => {
-    log('1');
+    const actual = [];
+    const log = (n) => actual.push(n);
+
+    log(1);
     setTimeout(() => {
-      log('2');
-      resolve(output); // 最後一個 macrotask 跑完才 resolve
+      log(2);
+      resolve(actual);
     }, 0);
 
     Promise.resolve().then(() => {
-      log('3');
-      Promise.resolve().then(() => log('4')); // microtask 中再產生 microtask
+      log(3);
+      Promise.resolve().then(() => log(4));
     });
 
     (async () => {
-      log('5');
-      await null; // 之後的部分屬於 microtask
-      log('6');
+      log(5);
+      await null;
+      log(6);
     })();
 
-    log('7');
+    log(7);
   });
 }
 
-// ===== 測試 =====
-const assert = require('node:assert');
-
 (async () => {
-  const order = await predictOrder();
-  assert.deepStrictEqual(order, ['1', '5', '7', '3', '6', '4', '2']);
-  assert.strictEqual(order[0], '1'); // 第一個同步輸出
-  assert.strictEqual(order[1], '5'); // async 函式同步執行到第一個 await
-  assert.strictEqual(order[2], '7'); // 最後一個同步輸出
-  assert.strictEqual(order[order.length - 1], '2'); // macrotask 最後
-  console.log('✅ 通過');
+  const actual = await runActual();
+  assert.deepStrictEqual(predictedOrder, actual);
+  console.log('✅ 通過！實際印出順序：' + actual.join(' '));
 })();
