@@ -49,9 +49,38 @@ npm install --save-dev jest supertest
 
 ### Express API
 
+> ⚠️ **Q10 需要 express**：在**專案根目錄**跑一次 `npm install`（根目錄已有 `package.json`，
+> `node_modules/` 不進版控）。其餘題目零依賴。
+
 | 編號 | 練習 | 主題 | 形式 | 連結 |
 |---|---|---|---|---|
-| Q05 | 完整可跑的 Tasks CRUD API | Express REST API | .md | [題目](./Q05-express-crud-api-任務API/題目.md) ・ [答案](./Q05-express-crud-api-任務API/答案.md) |
+| Q10 | Express 伺服器：狀態碼語意・原始 body・冪等 | 400 vs 422 / 404 vs 405 / webhook 驗簽 / 冪等 | .js **可執行** | [題目](./Q10-express-server-狀態碼與冪等/題目.js) ・ [答案](./Q10-express-server-狀態碼與冪等/答案.js) |
+| Q05 | 完整可跑的 Tasks CRUD API | Express REST API | .md 教學文 | [題目](./Q05-express-crud-api-任務API/題目.md) ・ [答案](./Q05-express-crud-api-任務API/答案.md) |
+
+> 📌 **Q10 與 Q05 的分工**：Q10 是可執行、有測試的版本，先做它。Q05 是教學文
+> （無驗證機制），當補充讀物即可。
+> ⚠️ Q05 內文寫「Express 4 不會自動接住 async handler 的錯誤，所以要用 `wrap` 樣板」
+> —— 這在 **Express 5 已內建**（實測會自動送進錯誤 middleware）。目前安裝的是 5.2.1。
+
+### 手寫原理（選配，想弄懂框架怎麼運作再做）
+
+> 這兩題不用框架，用來理解 Express 的內部機制。筆試不會要你實作路由器，
+> 但口試被追問「`next()` 在做什麼」時，做過的人答得出來。
+
+| 編號 | 練習 | 主題 | 形式 | 連結 |
+|---|---|---|---|---|
+| Q11 | 手寫路由器（含路徑參數） | 路由比對 / 404 vs 405 | .js | [題目](./Q11-router-手寫路由器/題目.js) ・ [答案](./Q11-router-手寫路由器/答案.js) |
+| Q12 | 手寫 middleware 鏈 | next() 原理 / 洋蔥模型 / 錯誤傳遞 | .js | [題目](./Q12-middleware-手寫中介層/題目.js) ・ [答案](./Q12-middleware-手寫中介層/答案.js) |
+
+### SQL 基礎（可執行，用 node:sqlite 零依賴）
+
+> ⚠️ **只碰過 NoSQL 的話，這兩題是最大缺口。** 你寫 SQL 字串，測試會真的
+> 建資料庫執行並比對結果 —— 不是讀範例，是動手寫。
+
+| 編號 | 練習 | 主題 | 形式 | 連結 |
+|---|---|---|---|---|
+| Q13 | SQL 查詢基礎（10 題） | WHERE / GROUP BY / HAVING / JOIN / 子查詢 | .js | [題目](./Q13-sql-查詢基礎/題目.js) ・ [答案](./Q13-sql-查詢基礎/答案.js) |
+| Q14 | 正規化與 schema 設計 | 1NF→2NF→3NF / 複合主鍵 / 外鍵約束 | .js | [題目](./Q14-normalization-正規化與schema設計/題目.js) ・ [答案](./Q14-normalization-正規化與schema設計/答案.js) |
 
 ### 資料庫
 

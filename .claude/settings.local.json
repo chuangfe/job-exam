@@ -3,7 +3,10 @@
     "allow": [
       "WebSearch",
       "WebFetch(domain:www.ptt.cc)",
-      "WebFetch(domain:www.dcard.tw)"
+      "WebFetch(domain:www.dcard.tw)",
+      "Bash(echo \"exit=$?\")",
+      "Bash(cd *)",
+      "Bash(python3 *)"
     ],
     "deny": [],
     "ask": []

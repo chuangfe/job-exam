@@ -1,0 +1,8 @@
+{
+  "name": "job-exam-practice",
+  "private": true,
+  "description": "練習題用的依賴（僅 Express 題需要，其餘題目零依賴可直接 node 執行）",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
