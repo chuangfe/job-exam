@@ -43,9 +43,11 @@ docs/            # 設計文件（spec）
 
 個人化練習題（依使用者背景：前端 React + 一點 Node）。每個軌道一個分類資料夾，含 `README.md` 題目目錄 + 每題一個子資料夾 `Q<NN>-<英文slug>-<中文>/`：
 
+- **判斷格式先問一句**：這題不看畫面能不能完整驗證？能 → 走下面「可執行程式題/觀念題」留在 `練習題/Javascript/`；一定要看渲染/排版/伺服器行為才有意義 → 走「React/Next 可視化題」。不要為了統一格式把純邏輯/純觀念題也包進 React。
 - **可執行程式題** → `題目.js`（題目註解 + stub + `node:assert` 測試，未解會 fail）+ `答案.js`（完整解 + 測試通過，印 `✅ 通過`）。測試用 CommonJS `require('node:assert')`，可直接 `node` 跑。
-- **觀念/專案題**（計概、React/CSS、Node 專案）→ `題目.md` + `答案.md`。
-- 新增題目：放進對應分類、依序編號、更新該分類 README。改完務必 `node 答案.js` 驗證通過。
+- **觀念/專案題**（計概、Node 專案）→ `題目.md` + `答案.md`。
+- **React/Next 可視化題**（`練習題/React/`、`練習題/Next/`）→ 每題一個 route，資料夾與檔名一律英文（不用中文，中文解說寫在 `index.tsx` 註解）：`src/pages/<english-slug>/`（React）或對應 Next App Router 路徑下，含 `meta.ts`（`{ id, number, title, category }`）+ `index.tsx`（組裝共用 `QuestionPage`/`Section` 版面，題目/答案元件並排）+ `components/Problem.tsx`（未解版）+ `components/Solution.tsx`（完整解，邏輯題 named-export 供 Vitest 測試）。`Problem.tsx` 必須有明確任務描述（要你預測什麼/找出什麼問題），不能在註解或畫面文字裡先把答案或原因講掉；真正的解釋留到 `Solution.tsx`。Next 專案中若題目牽涉衝突的 route-level 設定（如 SSR vs ISR），`Problem`/`Solution` 改成兩個相鄰的 sibling route（`problem/page.tsx`、`solution/page.tsx`）而非同頁兩元件。兩專案都用 Vitest 驗證：邏輯題有行為測試，觀念/視覺題至少有「render 不拋錯」的 smoke test。`練習題/Next/` 務必用 `--webpack`（`next dev --webpack`/`next build --webpack`）——Next 16 的 Turbopack 在路徑含中文字元時會 panic crash。
+- 新增題目：放進對應分類、依序編號、更新該分類 README。改完務必驗證通過（`node 答案.js`，或 React/Next 題跑 `npm run test` + `npm run build`）。三個軌道（`前端/`、`React/`、`Next/`）的題號互不重複，新增前先確認該題號沒有在別的軌道出現過。
 
 ## 內容原則
 

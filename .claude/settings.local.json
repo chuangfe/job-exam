@@ -1,14 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "WebSearch",
-      "WebFetch(domain:www.ptt.cc)",
-      "WebFetch(domain:www.dcard.tw)",
-      "Bash(echo \"exit=$?\")",
-      "Bash(cd *)",
-      "Bash(python3 *)"
+      "Bash(xargs -r kill)",
+      "Bash(rm -rf q01-closure q02-this-binding q03-prototype-chain q04-event-loop q05-hoisting q06-equality q07-tdz q08-shallow-deep-copy q09-debounce q10-throttle q11-deep-clone q12-promise-all q13-my-promise q14-curry q15-event-emitter q16-flatten q17-bind q36-state-management q38-typescript-types q39-request-cache q40-web-storage q48-pwa-service-worker q50-i18n q53-websocket q54-webpack q51-e2e-testing q52-ci-cd q55-git q56-code-review-refactor q57-from-scratch-project q58-ab-testing q59-analytics-tracking q60-headless-cms q61-scalable-architecture q62-ai-in-dev-workflow)",
+      "Bash(rm -f __tests__/js-concepts.smoke.test.tsx __tests__/js-handwritten.smoke.test.tsx __tests__/framework-data.smoke.test.tsx __tests__/platform-capabilities.smoke.test.tsx __tests__/testing-devops.smoke.test.tsx __tests__/engineering-delivery.smoke.test.tsx __tests__/product-growth-architecture.smoke.test.tsx)"
     ],
-    "deny": [],
-    "ask": []
+    "defaultMode": "bypassPermissions"
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true
   }
 }

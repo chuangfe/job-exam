@@ -1,0 +1,17 @@
+@import 'tailwindcss';
+
+body {
+  @apply mx-auto max-w-5xl p-6 leading-relaxed text-slate-900;
+}
+
+.question-page-sections {
+  @apply grid grid-cols-1 gap-6 md:grid-cols-2;
+}
+
+.question-section {
+  @apply rounded-lg border border-slate-300 p-4;
+}
+
+.home-page ul {
+  @apply pl-5;
+}
